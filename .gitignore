@@ -1,0 +1,90 @@
+# ----------------------
+# Python cache files
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ----------------------
+# Virtual environments
+# ----------------------
+venv/
+env/
+ENV/
+.venv/
+
+# ----------------------
+# Distribution / packaging
+# ----------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+.artifact
+
+# ----------------------
+# Logs & temp files
+# ----------------------
+*.log
+*.tmp
+*.swp
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+.env.*
+*.env
+
+# ----------------------
+# Jupyter Notebook
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# VS Code / IDE
+# ----------------------
+.vscode/
+.idea/
+
+# ----------------------
+# OS files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# ML / Data files
+# ----------------------
+data/
+datasets/
+*.csv
+*.tsv
+*.json
+
+# ----------------------
+# Model files
+# ----------------------
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.onnx
+
+# ----------------------
+# Coverage / testing
+# ----------------------
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ----------------------
+# Docker
+# ----------------------
+*.pid
+*.seed
+
+# ----------------------
+# Node (if fullstack project)
+# ----------------------
+node_modules/
