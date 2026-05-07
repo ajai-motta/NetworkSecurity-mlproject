@@ -4,4 +4,5 @@ numpy
 pymongo
 certifi
 psycopg2
+scikit-learn
 #-e .
