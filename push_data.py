@@ -83,7 +83,7 @@ class NetworkDataExtraction:
             self.conn.commit()
             cur.close()
             self.conn.close()
-            logging.info()
+            logging.info("inset complete")
          except Exception as e:
             raise CustomException(e,sys)
 
