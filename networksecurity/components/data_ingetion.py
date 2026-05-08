@@ -68,7 +68,7 @@ class DataIngection:
             test_set.to_csv(self.data_ingesion_config.testing_file_path)
             logging.info("sucessfully completed saving tein and test csv")
         except Exception as e:
-            raise CustomException(e,sys)
+            raise CustomException(e,sys) #
 
 
 
