@@ -3,6 +3,8 @@ pandas
 numpy
 pymongo
 certifi
+dill
 psycopg2
+pyyaml
 scikit-learn
 #-e .

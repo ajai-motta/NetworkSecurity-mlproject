@@ -1,0 +1,94 @@
+schema:
+  columns:
+    - name: having_IP_Address
+      type: int
+
+    - name: URL_Length
+      type: int
+
+    - name: Shortining_Service
+      type: int
+
+    - name: having_At_Symbol
+      type: int
+
+    - name: double_slash_redirecting
+      type: int
+
+    - name: Prefix_Suffix
+      type: int
+
+    - name: having_Sub_Domain
+      type: int
+
+    - name: SSLfinal_State
+      type: int
+
+    - name: Domain_registeration_length
+      type: int
+
+    - name: Favicon
+      type: int
+
+    - name: port
+      type: int
+
+    - name: HTTPS_token
+      type: int
+
+    - name: Request_URL
+      type: int
+
+    - name: URL_of_Anchor
+      type: int
+
+    - name: Links_in_tags
+      type: int
+
+    - name: SFH
+      type: int
+
+    - name: Submitting_to_email
+      type: int
+
+    - name: Abnormal_URL
+      type: int
+
+    - name: Redirect
+      type: int
+
+    - name: on_mouseover
+      type: int
+
+    - name: RightClick
+      type: int
+
+    - name: popUpWidnow
+      type: int
+
+    - name: Iframe
+      type: int
+
+    - name: age_of_domain
+      type: int
+
+    - name: DNSRecord
+      type: int
+
+    - name: web_traffic
+      type: int
+
+    - name: Page_Rank
+      type: int
+
+    - name: Google_Index
+      type: int
+
+    - name: Links_pointing_to_page
+      type: int
+
+    - name: Statistical_report
+      type: int
+
+    - name: Result
+      type: int

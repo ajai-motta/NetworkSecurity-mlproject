@@ -6,7 +6,7 @@ import numpy as np
 
 
 ARTIFACT_DIR : str= "Artifacts"
-
+SCHEMA_FILE_PATH=os.path.join("data_schema","shema.yml")
 TRAIN_FILE_NAME : str= "train.csv"
 TEST_FILE_NAME : str= "test.csv"
 PIPELINE_NAME: str= "NETWORKSECURITY"
@@ -23,3 +23,9 @@ DATA_Ingestion_DIR: str="data_ingection"
 DATA_Ingestion_FREATURE_STORE_DIR: str="feature_store"
 DATA_Ingestion_INGESTED_DIR:str="ingested"
 DATA_Ingestion_TEST_RATIO:float= 0.2
+""""""
+DATA_VALIDATION_DIR_NAME :str="data_validation"
+DATA_VALIDATION_VALID_DIR:str="validated"
+DATA_VALIDATION_INVALID_DIR:str="invalid"
+DATA_VALIDATION_DRIFT_REPORT_DIR:str="drift_report"
+DATA_VALIDATION_DRIFT_REPORT_FILE_NAME:str="report.yml"
