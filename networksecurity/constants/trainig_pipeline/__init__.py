@@ -6,7 +6,7 @@ import numpy as np
 
 
 ARTIFACT_DIR : str= "Artifacts"
-SCHEMA_FILE_PATH=os.path.join("data_schema","shema.yml")
+SCHEMA_FILE_PATH=os.path.join("data_schema","schema.yml")
 TRAIN_FILE_NAME : str= "train.csv"
 TEST_FILE_NAME : str= "test.csv"
 PIPELINE_NAME: str= "NETWORKSECURITY"
