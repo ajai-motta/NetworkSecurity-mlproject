@@ -46,6 +46,7 @@ class DataValidation:
             report:dict={}
             is_found:bool
             for column in base_df.columns:
+                print("drift column:",column)
                 d1=base_df[column]
                 d2=current_df[column]
                 is_sample=ks_2samp(d1,d2)
@@ -54,15 +55,16 @@ class DataValidation:
                 else:
                     is_found=True
                     status=False
-                report.update({column:{
-                   "pvalue":float(is_sample.pvalue),
-                   "drift_status":is_found
-                }})
+                report[column] = {
+                    "pvalue": float(is_sample.pvalue),
+                    "drift_status": is_found
+                                }
+
                 dirift_file_path=self.data_validation_config.drift_report_file_path
                 dir_name=os.path.dirname(dirift_file_path)
                 os.makedirs(dir_name,exist_ok=True)
                 write_yaml(file_path=dirift_file_path,data=report)
-                return status
+            return status
 
 
          except Exception as e:
@@ -87,7 +89,7 @@ class DataValidation:
         
     def initate_data_validation(self)->DataValidationArtifact:
          try:
-            error_message
+            error_message=''
             test_file_path=self.data_ingetion_artifact.testing_file_path
             train_file_path=self.data_ingetion_artifact.training_file_path
             train_dataframe=DataValidation.read_data(train_file_path)
@@ -106,11 +108,11 @@ class DataValidation:
             os.makedirs(invalid_dir_name,exist_ok=True)
 
             if status:
-                train_dataframe.to_csv(self.data_validation_config.valid_train_file_path)
-                test_dataframe.to_csv(self.data_validation_config.valid_test_file_path)
+                train_dataframe.to_csv(self.data_validation_config.valid_train_file_path,index=False)
+                test_dataframe.to_csv(self.data_validation_config.valid_test_file_path,index=False)
             else:
-                train_dataframe.to_csv(self.data_validation_config.invalid_train_file_path)
-                test_dataframe.to_csv(self.data_validation_config.invalid_test_file_path)
+                train_dataframe.to_csv(self.data_validation_config.invalid_train_file_path,index=False)
+                test_dataframe.to_csv(self.data_validation_config.invalid_test_file_path,index=False)
             
             data_validation_artifact=DataValidationArtifact(
                                 validation_status=status,

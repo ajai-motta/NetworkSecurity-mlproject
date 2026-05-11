@@ -64,8 +64,8 @@ class DataIngection:
             logging.info("Performed train test split")
             dir_path=os.path.dirname(self.data_ingesion_config.training_file_path)
             os.makedirs(dir_path,exist_ok=True)
-            train_set.to_csv(self.data_ingesion_config.training_file_path)
-            test_set.to_csv(self.data_ingesion_config.testing_file_path)
+            train_set.to_csv(self.data_ingesion_config.training_file_path,index=False)
+            test_set.to_csv(self.data_ingesion_config.testing_file_path,index=False)
             logging.info("sucessfully completed saving tein and test csv")
         except Exception as e:
             raise CustomException(e,sys) #
