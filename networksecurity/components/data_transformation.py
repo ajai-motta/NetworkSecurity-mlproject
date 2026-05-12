@@ -22,7 +22,7 @@ class DataTrasformation:
         
     def get_transformer_object(self)->Pipeline:
          try:
-            imputer=KNNImputer(DATA_TRANSFORMATION_IMPUTER_PARAMS)
+            imputer=KNNImputer(**DATA_TRANSFORMATION_IMPUTER_PARAMS)
             processor=Pipeline([("imputer",imputer)])
             return processor
 
@@ -45,12 +45,12 @@ class DataTrasformation:
             train_df=self.read_data(self.data_validation_artifact.valid_train_file_path)
             test_df=self.read_data(self.data_validation_artifact.valid_test_file_path)
             #train
-            input_data_train=train_df.drop(columns=[TARGET_COLUMN],axis=1)
-            output_data_train=train_df[TARGET_COLUMN]
+            input_data_train=train_df.drop(columns=[TARGET_COLUMN.casefold()],axis=1)
+            output_data_train=train_df[TARGET_COLUMN.casefold()]
             output_data_train=output_data_train.replace(-1,0)
             #test
-            input_data_test=test_df.drop(columns=[TARGET_COLUMN],axis=1)
-            output_data_test=test_df[TARGET_COLUMN]
+            input_data_test=test_df.drop(columns=[TARGET_COLUMN.casefold()],axis=1)
+            output_data_test=test_df[TARGET_COLUMN.casefold()]
             output_data_test=output_data_test.replace(-1,0)
             preprocessor_obj=self.get_transformer_object()
             transformed_input_train=preprocessor_obj.fit_transform(input_data_train)

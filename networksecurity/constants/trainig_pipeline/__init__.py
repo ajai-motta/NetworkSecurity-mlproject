@@ -37,8 +37,7 @@ DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR_NAME="transformed_object"
 PREPOSESSOR_FILE_NAME='preposseor.pkl'
 
 DATA_TRANSFORMATION_IMPUTER_PARAMS:dict={
-        "missing_values": np.nan,
-        
+        "missing_values": np.nan, 
         "n_neighbors":3,
         "weights": "uniform"
     }
