@@ -17,6 +17,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import r2_score
 import numpy as np
 import pandas as pd
+import mlflow
 
 class ModelTrainer:
     def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
@@ -26,6 +27,23 @@ class ModelTrainer:
         except Exception as e:
             raise CustomException(e,sys)
     
+
+    def mlflow_func(self,best_model,classification_metric_artifact_train:ClassificationMetricArtifact,classification_metric_test:ClassificationMetricArtifact):
+        try:
+            
+            mlflow.set_tracking_uri("file:./mlruns")
+            mlflow.set_experiment("Network_Security_Experiment")
+            with mlflow.start_run(run_name="Model_Training_Run"):
+                mlflow.log_param("model_name", best_model.__class__.__name__)
+                mlflow.log_metric("train_f1_score", classification_metric_artifact_train.f1_score)
+                mlflow.log_metric("train_precision", classification_metric_artifact_train.precision_score)
+                mlflow.log_metric("train_recall", classification_metric_artifact_train.recall_score)
+                mlflow.log_metric("test_f1_score", classification_metric_test.f1_score)
+                mlflow.log_metric("test_precision", classification_metric_test.precision_score)
+                mlflow.log_metric("test_recall", classification_metric_test.recall_score)
+                mlflow.sklearn.log_model(best_model, "model")
+        except Exception as e:
+            raise CustomException(e,sys)
     def train_model(self,x_train,y_train,x_test,y_test):
         try:
             models={
@@ -79,6 +97,7 @@ class ModelTrainer:
             classification_metric_test=calculate_classification_metrics(y_test,y_test_pred)
             save_object_pkl(self.model_trainer_config.trained_model_file_name,best_model)
             model_trainer_artifact=ModelTrainerArtifact(model_file_path=self.model_trainer_config.trained_model_file_name,train_metric_artifact=classification_metric_artifact_train,test_metric_artifact=classification_metric_test)
+            self.mlflow_func(best_model,classification_metric_artifact_train,classification_metric_test)
             return model_trainer_artifact
 
 
