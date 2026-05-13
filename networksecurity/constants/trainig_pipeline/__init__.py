@@ -41,3 +41,13 @@ DATA_TRANSFORMATION_IMPUTER_PARAMS:dict={
         "n_neighbors":3,
         "weights": "uniform"
     }
+
+""""model trainer"""
+
+MODEL_TRAINER_DIR:str='model_trainer'
+MODEL_FILE_NAME:str='model.pkl'
+MODEL_TRAINER_TRAINED_DIR:str='trained_model'
+MODEL_TRAINER_EXPECTED_SCORE:float=0.6
+MODEL_OVERFITTING_THESHOLD: float=0.05
+SAVED_MODEL_DIR:str="saved_models"
+

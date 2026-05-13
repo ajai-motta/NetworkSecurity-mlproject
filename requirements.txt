@@ -6,5 +6,6 @@ certifi
 dill
 psycopg2
 pyyaml
+mlflow
 scikit-learn
 #-e .

@@ -1,0 +1,100 @@
+from networksecurity.entity.config_entity import DataValidationConfig,DataTransformationConfig,ModelTrainerConfig
+from networksecurity.entity.atifact_entity import DataTransformationArtifact,ModelTrainerArtifact,ClassificationMetricArtifact
+from networksecurity.utils.read_write import read_yaml,write_yaml,save_numpy_array,save_object_pkl,load_numpy_object
+from networksecurity.utils.model import evaluate_model
+from networksecurity.utils.classification_metric import calculate_classification_metrics
+import os 
+import sys
+from networksecurity.logging.logging import logging
+from networksecurity.exception.exception import CustomException
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import GradientBoostingRegressor,AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import r2_score
+import numpy as np
+import pandas as pd
+
+class ModelTrainer:
+    def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
+        try:
+            self.model_trainer_config=model_trainer_config
+            self.data_transformation_artifact=data_transformation_artifact
+        except Exception as e:
+            raise CustomException(e,sys)
+    
+    def train_model(self,x_train,y_train,x_test,y_test):
+        try:
+            models={
+                "RandomForestClassifier":RandomForestClassifier(),
+                "GradientBoostingClassifier":GradientBoostingClassifier(),
+                "AdaBoostClassifier":AdaBoostClassifier(),
+                "DecisionTreeClassifier":DecisionTreeClassifier(),
+                "KNeighborsClassifier":KNeighborsClassifier(),
+                "LogisticRegression":LogisticRegression()
+                }
+            params={
+                "RandomForestClassifier":{
+                    'n_estimators': [100, 200],
+                    'max_depth': [None, 10, 20],
+                    'min_samples_split': [2, 5],
+                    'min_samples_leaf': [1, 2]
+                },
+                "GradientBoostingClassifier":{
+                    'n_estimators': [100, 200],
+                    'learning_rate': [0.01, 0.1],
+                    'max_depth': [3, 5]
+                },
+                "AdaBoostClassifier":{
+                    'n_estimators': [50, 100],
+                    'learning_rate': [0.01, 0.1]
+                },
+                "DecisionTreeClassifier":{
+                    'max_depth': [None, 10, 20],
+                    'min_samples_split': [2, 5],
+                    'min_samples_leaf': [1, 2]
+                },
+                "KNeighborsClassifier":{
+                    'n_neighbors': [3, 5, 7],
+                    'weights': ['uniform', 'distance']
+                },
+                "LogisticRegression":{
+                    'C': [0.1, 1.0, 10.0],
+                    'penalty': ['l1', 'l2']
+                }
+            }
+            model_report:dict=evaluate_model(X_train=x_train,y_train=y_train,X_test=x_test,y_test=y_test,models=models,params=params)
+            best_model_name = max(model_report, key=model_report.get)
+            best_model_score = model_report[best_model_name] # why does auto complete sort the dict values in ascending order
+            best_model=models[best_model_name]
+            logging.info(f"best model found on training dataset is {best_model_name} with f1 score of {best_model_score}")
+            best_model=models[best_model_name]
+            best_model.fit(x_train,y_train)
+            y_train_pred=best_model.predict(x_train)
+            y_test_pred=best_model.predict(x_test)
+            classification_metric_artifact_train=calculate_classification_metrics(y_train,y_train_pred)
+            classification_metric_test=calculate_classification_metrics(y_test,y_test_pred)
+            save_object_pkl(self.model_trainer_config.trained_model_file_name,best_model)
+            model_trainer_artifact=ModelTrainerArtifact(model_file_path=self.model_trainer_config.trained_model_file_name,train_metric_artifact=classification_metric_artifact_train,test_metric_artifact=classification_metric_test)
+            return model_trainer_artifact
+
+
+        except Exception as e:
+            raise CustomException(e,sys)
+        
+    def initate_model_trainer(self)->ModelTrainerArtifact:
+         try:
+            logging.info("initiated model trainer")
+            train_file_path=self.data_transformation_artifact.transformed_train_file_path
+            test_file_path=self.data_transformation_artifact.transformed_test_file_path
+            train_array=load_numpy_object(train_file_path)
+            test_array=load_numpy_object(test_file_path)
+            x_train,y_train=train_array[:,:-1],train_array[:,-1]
+            x_test,y_test=test_array[:,:-1],test_array[:,-1]
+            model_trainer_artifact=self.train_model(x_train,y_train,x_test,y_test)
+         except Exception as e:
+            raise CustomException(e,sys)
+        

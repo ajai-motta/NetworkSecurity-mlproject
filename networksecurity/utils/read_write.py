@@ -79,7 +79,24 @@ def save_object_pkl(file_path: str, obj: object) -> None:
     except Exception as e:
         raise CustomException(e, sys)
 
+def load_numpy_object(file_path: str) -> np.ndarray:
+    """
+    Load a NumPy array from a .npy file.
 
+    Args:
+        file_path (str): Path to the .npy file.
+
+    Returns:
+        np.ndarray: Loaded NumPy array.
+    """
+    try:
+        with open(file_path, "rb") as file:
+            array = np.load(file)
+            print(f"Array loaded from: {file_path}")
+            return array
+
+    except Exception as e:
+        raise CustomException(e, sys)
 
 
 if __name__=="__main__":
