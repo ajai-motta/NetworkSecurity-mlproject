@@ -98,6 +98,24 @@ def load_numpy_object(file_path: str) -> np.ndarray:
     except Exception as e:
         raise CustomException(e, sys)
 
+def load_object_pkl(file_path: str) -> object:
+    """
+    Load a Python object from a .pkl file.
+
+    Args:
+        file_path (str): Path to the .pkl file.
+
+    Returns:
+        object: Loaded Python object.
+    """
+    try:
+        with open(file_path, "rb") as file:
+            obj = pickle.load(file)
+            print(f"Pickle file loaded from: {file_path}")
+            return obj
+
+    except Exception as e:
+        raise CustomException(e, sys)
 
 if __name__=="__main__":
     try:
