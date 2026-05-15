@@ -8,4 +8,7 @@ psycopg2
 pyyaml
 mlflow
 scikit-learn
+fastapi
+uvicorn
+python-multipart
 #-e .
