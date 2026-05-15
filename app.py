@@ -53,6 +53,7 @@ async def predict(request:Request,file:UploadFile=File(...)):
         df["predicted_label"]=pred
         
         table_html=df.to_html(classes="table table-striped")
+        print(table_html)
         return templates.TemplateResponse("result.html",{"request":request,"table_html":table_html,"pred":pred})
     except Exception as e:
         raise CustomException(e,sys)

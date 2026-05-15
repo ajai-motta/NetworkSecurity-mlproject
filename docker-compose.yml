@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13-alpine
+    container_name: network-security-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-networksecurity}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-network_security}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-networksecurity}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - network-security-network
+
+  # FastAPI Application
+  app:
+    build: .
+    container_name: network-security-app
+    environment:
+      DB_HOST: postgres
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-network_security}
+      DB_USER: ${DB_USER:-networksecurity}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./Artifacts:/app/Artifacts
+      - ./logs:/app/logs
+      - ./final_model:/app/final_model
+    networks:
+      - network-security-network
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
+
+networks:
+  network-security-network:
+    driver: bridge
